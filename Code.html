@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pay for Access</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f172a; color: #fff; text-align: center; padding: 40px 20px; }
+    input, button { width: 90%; max-width: 300px; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; font-size: 16px; }
+    button { background: #38bdf8; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1 id="planTitle">Confirm Payment</h1>
+  <p id="planDetails"></p>
+  <input type="tel" id="phone" placeholder="Mobile Money Number">
+  <button onclick="pay()">Pay Now</button>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get('plan');
+    const amount = params.get('amount');
+    document.getElementById('planDetails').innerText = `${plan.toUpperCase()} plan — ${amount} cedis`;
+
+    async function pay() {
+      const phone = document.getElementById('phone').value;
+      const res = await fetch('/api/initiate-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan, amount, phone })
+      });
+      const data = await res.json();
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl; // redirect to mobile money prompt
+      } else {
+        alert('Payment could not be started. Try again.');
+      }
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pay for Access</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f172a; color: #fff; text-align: center; padding: 40px 20px; }
+    input, button { width: 90%; max-width: 300px; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; font-size: 16px; }
+    button { background: #38bdf8; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1 id="planTitle">Confirm Payment</h1>
+  <p id="planDetails"></p>
+  <input type="tel" id="phone" placeholder="Mobile Money Number">
+  <button onclick="pay()">Pay Now</button>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get('plan');
+    const amount = params.get('amount');
+    document.getElementById('planDetails').innerText = `${plan.toUpperCase()} plan — ${amount} cedis`;
+
+    async function pay() {
+      const phone = document.getElementById('phone').value;
+      const res = await fetch('/api/initiate-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan, amount, phone })
+      });
+      const data = await res.json();
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl; // redirect to mobile money prompt
+      } else {
+        alert('Payment could not be started. Try again.');
+      }
+    }
+  </script>
+</body>
+</html>
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+const durations = { daily: 1, weekly: 7, monthly: 30 }; // days
+
+app.post('/api/initiate-payment', async (req, res) => {
+  const { plan, amount, phone } = req.body;
+  // Call Hubtel/Paystack API here with amount, phone, and a callback URL
+  // On success, they return a paymentUrl or a payment reference
+  res.json({ paymentUrl: 'https://payment-gateway.com/checkout/xyz' });
+});
+
+app.post('/api/payment-webhook', async (req, res) => {
+  // Gateway calls this when payment succeeds
+  const { phone, plan } = req.body;
+  const days = durations[plan];
+  // Save to database: phone, expiry = now + days
+  // Trigger router/RADIUS system to grant access for that MAC/phone
+  res.sendStatus(200);
+});
+
+app.listen(3000);
