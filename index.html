@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Citinet Wi-Fi</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f4f6f8;color:#222}
+header{background:#0b5fff;color:#fff;text-align:center;padding:28px 16px}
+.plans{display:flex;flex-direction:column;gap:14px;padding:16px;max-width:420px;margin:auto}
+.card{background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.price{font-size:32px;font-weight:bold;color:#0b5fff}
+.btn{display:block;margin-top:12px;background:#0b5fff;color:#fff;padding:12px;border-radius:8px;text-decoration:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>Citinet Wi-Fi</h1>
+  <p>Choose a plan to get online</p>
+</header>
+<div class="plans">
+  <div class="card">
+    <h2>Daily</h2>
+    <div class="price">GH₵5</div>
+    <p>24 hours of internet</p>
+    <a class="btn" href="pay.html?plan=Daily&amount=5">Buy Daily</a>
+  </div>
+  <div class="card">
+    <h2>Weekly</h2>
+    <div class="price">GH₵25</div>
+    <p>7 days of internet</p>
+    <a class="btn" href="pay.html?plan=Weekly&amount=25">Buy Weekly</a>
+  </div>
+  <div class="card">
+    <h2>Monthly</h2>
+    <div class="price">GH₵80</div>
+    <p>30 days of internet</p>
+    <a class="btn" href="pay.html?plan=Monthly&amount=80">Buy Monthly</a>
+  </div>
+</div>
+</body>
+</html>
